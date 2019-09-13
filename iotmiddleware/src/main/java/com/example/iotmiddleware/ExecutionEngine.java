@@ -1,11 +1,11 @@
 package com.example.iotmiddleware;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class ExecutionEngine extends Thread {
 	
-	private static List<String> hostList=new ArrayList<String>();
+	private static Set<String> hostList=new LinkedHashSet<String>();
 	public ExecutionEngine() throws Exception {
 		
 	}
@@ -19,7 +19,7 @@ public class ExecutionEngine extends Thread {
 	public void run() {
 		try {
 			for(int i=0; i<10; i++) {
-				System.out.println(hostList);
+				System.out.println("Host list : "+hostList);
 				Thread.sleep(10000);
 			}
 		} catch (Exception e) {
