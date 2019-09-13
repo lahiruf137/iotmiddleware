@@ -23,7 +23,7 @@
 hs_err_pid*
 
 #custom
-.iotmiddleware/.settings
-.iotmiddleware/target
-.iotmiddleware/.classpath
-.iotmiddleware/.project
+iotmiddleware/.settings
+iotmiddleware/target
+iotmiddleware/.classpath
+iotmiddleware/.project
