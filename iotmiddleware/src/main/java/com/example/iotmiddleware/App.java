@@ -16,6 +16,10 @@ public class App
         new Thread(new MdnsClient()).start();
         System.out.print("[DONE] \n");
         
+        System.out.print("Starting Remote Operations 	\t");
+        new Thread(new RemoteOperationServer()).start();
+        System.out.print("[DONE] \n");
+        
         System.out.print("Starting Execution Engine 	\t");
         new Thread(new ExecutionEngine()).start();
         System.out.print("[DONE] \n");
@@ -23,7 +27,7 @@ public class App
         Thread.sleep(30000);
         System.out.print("Terminating System	    	\t");
         System.out.print("[DONE] \n");
-        System.exit(0);
+        //System.exit(0);
     }
    
     

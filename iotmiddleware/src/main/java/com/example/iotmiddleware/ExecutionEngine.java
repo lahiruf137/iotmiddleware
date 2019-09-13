@@ -18,9 +18,13 @@ public class ExecutionEngine extends Thread {
 	}
 	public void run() {
 		try {
-			for(int i=0; i<10; i++) {
+			for(int i=0; i<3; i++) {
 				System.out.println("Host list : "+hostList);
 				Thread.sleep(10000);
+				
+				
+				
+				
 			}
 		} catch (Exception e) {
 			System.out.println("Exception occored - "+e.getMessage());
