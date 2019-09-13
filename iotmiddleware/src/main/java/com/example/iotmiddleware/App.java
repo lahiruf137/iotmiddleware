@@ -1,10 +1,8 @@
 package com.example.iotmiddleware;
-import javax.jmdns.ServiceEvent;
 
-import com.example.iotmiddleware.servicediscovery.*;
 /**
- * Hello world!
  * iotmiddleware
+ * 
  */
 public class App 
 {
@@ -18,18 +16,15 @@ public class App
         new Thread(new MdnsClient()).start();
         System.out.print("[DONE] \n");
         
+        System.out.print("Starting Execution Engine 	\t");
+        new Thread(new ExecutionEngine()).start();
+        System.out.print("[DONE] \n");
         
         Thread.sleep(30000);
-        System.out.println("ok");
+        System.out.print("Terminating System	    	\t");
+        System.out.print("[DONE] \n");
         System.exit(0);
     }
-    
-    static class Listner extends SimpleListener{
-    	@Override
-    	public void serviceResolved(ServiceEvent event) {
-    		System.out.println("Service resloved from child");
-   		 }
-    	
-    }
+   
     
 }
