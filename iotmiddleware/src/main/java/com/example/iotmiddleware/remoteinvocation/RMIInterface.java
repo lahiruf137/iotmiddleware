@@ -1,4 +1,4 @@
-package com.example.remoteinvocation;
+package com.example.iotmiddleware.remoteinvocation;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

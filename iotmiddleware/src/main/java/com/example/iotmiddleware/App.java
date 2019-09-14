@@ -27,7 +27,7 @@ public class App
         Thread.sleep(30000);
         System.out.print("Terminating System	    	\t");
         System.out.print("[DONE] \n");
-        //System.exit(0);
+        System.exit(0);
     }
    
     

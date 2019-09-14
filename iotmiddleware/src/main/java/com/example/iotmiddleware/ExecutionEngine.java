@@ -1,7 +1,10 @@
 package com.example.iotmiddleware;
 
+import java.rmi.Naming;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
+import com.example.iotmiddleware.remoteinvocation.RMIInterface;
 
 public class ExecutionEngine extends Thread {
 	
@@ -21,7 +24,10 @@ public class ExecutionEngine extends Thread {
 			for(int i=0; i<3; i++) {
 				System.out.println("Host list : "+hostList);
 				Thread.sleep(10000);
-				
+				RMIInterface look_up= (RMIInterface) Naming.lookup("//localhost/exampleservice");
+				String response = look_up.helloTo("t1");
+				System.out.println("ExecutionEngine:Output:"+response);
+
 				
 				
 				

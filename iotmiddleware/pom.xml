@@ -36,6 +36,7 @@
                 <source>1.6</source>
                 <target>1.6</target>
         </configuration>
+        
      </plugin>
         <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -43,6 +44,7 @@
         <configuration>
              <mainClass>com.example.iotmiddleware.App</mainClass>
         </configuration>
+        <version>1.6.0</version>
         </plugin>
     </plugins>
    </build>

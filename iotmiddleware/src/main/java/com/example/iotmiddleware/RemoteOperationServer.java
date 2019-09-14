@@ -2,7 +2,7 @@ package com.example.iotmiddleware;
 
 import java.rmi.Naming;
 
-import com.example.remoteinvocation.ServerOperation;
+import com.example.iotmiddleware.remoteinvocation.ServerOperation;
 
 public class RemoteOperationServer implements Runnable{
 	public void run() {
@@ -10,7 +10,7 @@ public class RemoteOperationServer implements Runnable{
 			Naming.rebind("//localhost/exampleservice", new ServerOperation());
 			}catch (Exception e) {
 				System.out.println(e.getMessage());
-				e.printStackTrace();
+				
 
 			}
 	}
