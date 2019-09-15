@@ -15,6 +15,7 @@ public class App
         System.out.print("[DONE] \n");
         
         System.out.print("Starting Discovery Service 	\t");
+        Thread.sleep(5000);
         new Thread(new MdnsClient()).start();
         System.out.print("[DONE] \n");
         
@@ -27,7 +28,7 @@ public class App
         System.out.print("[DONE] \n");
         
         
-        Thread.sleep(5000);
+        Thread.sleep(50000);
         System.out.print("Terminating System	    	\t");
         System.out.print("[DONE] \n");
         System.exit(0);
