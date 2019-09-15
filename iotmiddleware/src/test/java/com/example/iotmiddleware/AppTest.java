@@ -1,4 +1,4 @@
-package com.example.lib_distributed_execution;
+package com.example.iotmiddleware;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
