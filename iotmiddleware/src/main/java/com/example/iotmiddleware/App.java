@@ -24,7 +24,7 @@ public class App
         new Thread(new ExecutionEngine()).start();
         System.out.print("[DONE] \n");
         
-        Thread.sleep(30000);
+        Thread.sleep(50000);
         System.out.print("Terminating System	    	\t");
         System.out.print("[DONE] \n");
         System.exit(0);
