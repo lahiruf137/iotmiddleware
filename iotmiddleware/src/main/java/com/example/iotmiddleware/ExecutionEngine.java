@@ -22,22 +22,19 @@ public class ExecutionEngine extends Thread {
 		hostList.remove(host);
 	}
 	public void run() {
-		try {
-			for(int i=0; i<50; i++) {
-				System.out.println("Host list : "+hostList);
-				Thread.sleep(1000);
+		for(int i=0; i<50; i++) {
+			try {
+					System.out.println("Host list : "+hostList);
+					Thread.sleep(1000);
+					
+					String host=getLoadBalancedHost();
+					RMIInterface look_up= (RMIInterface) Naming.lookup("//"+host+"/exampleservice");
+					String response = look_up.helloTo("t1");
+					System.out.println("ExecutionEngine:Output:"+response+":host"+host);	
 				
-				String host=getLoadBalancedHost();
-				RMIInterface look_up= (RMIInterface) Naming.lookup("//"+host+"/exampleservice");
-				String response = look_up.helloTo("t1");
-				System.out.println("ExecutionEngine:Output:"+response+":host"+host);
-
-				
-				
-				
+			} catch (Exception e) {
+				System.out.println("Exception occored - "+e.getMessage());
 			}
-		} catch (Exception e) {
-			System.out.println("Exception occored - "+e.getMessage());
 		}
 	}
 	public String getLoadBalancedHost() {
