@@ -41,7 +41,6 @@ public class ExecutionEngine extends Thread {
 		}
 	}
 	public String getLoadBalancedHost() {
-		
 		String host=null;
 		int element = new Random().nextInt(hostList.size());
 		int i=0;
