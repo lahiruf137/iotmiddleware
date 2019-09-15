@@ -25,7 +25,7 @@ public class ExecutionEngine extends Thread {
 		for(int i=0; i<50; i++) {
 			try {
 					System.out.println("Host list : "+hostList);
-					Thread.sleep(1000);
+					Thread.sleep(100);
 					
 					String host=getLoadBalancedHost();
 					RMIInterface look_up= (RMIInterface) Naming.lookup("//"+host+"/exampleservice");
