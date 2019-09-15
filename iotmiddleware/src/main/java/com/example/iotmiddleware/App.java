@@ -1,5 +1,7 @@
 package com.example.iotmiddleware;
 
+import java.rmi.registry.LocateRegistry;
+
 /**
  * iotmiddleware
  * 
@@ -19,10 +21,11 @@ public class App
         System.out.print("Starting Remote Operations 	\t");
         new Thread(new RemoteOperationServer()).start();
         System.out.print("[DONE] \n");
-        
+
         System.out.print("Starting Execution Engine 	\t");
         new Thread(new ExecutionEngine()).start();
         System.out.print("[DONE] \n");
+        
         
         Thread.sleep(5000);
         System.out.print("Terminating System	    	\t");
