@@ -15,7 +15,6 @@ public class App
         System.out.print("[DONE] \n");
         
         System.out.print("Starting Discovery Service 	\t");
-        Thread.sleep(5000);
         new Thread(new MdnsClient()).start();
         System.out.print("[DONE] \n");
         
@@ -23,12 +22,17 @@ public class App
         new Thread(new RemoteOperationServer()).start();
         System.out.print("[DONE] \n");
 
+        System.out.print("Waiting for system init   	\t[....]");
+        Thread.sleep(5000);
+        System.out.print("\rWaiting for system init   	\t[DONE]\n");
+        
+        
         System.out.print("Starting Execution Engine 	\t");
         new Thread(new ExecutionEngine()).start();
         System.out.print("[DONE] \n");
         
         
-        Thread.sleep(50000);
+        Thread.sleep(5000);
         System.out.print("Terminating System	    	\t");
         System.out.print("[DONE] \n");
         System.exit(0);
