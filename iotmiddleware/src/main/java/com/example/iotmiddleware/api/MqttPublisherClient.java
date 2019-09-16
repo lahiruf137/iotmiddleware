@@ -6,7 +6,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-public class MqttClientAPI {
+public class MqttPublisherClient {
 	
 
     private int qos;
@@ -16,7 +16,7 @@ public class MqttClientAPI {
     
     MqttClient sampleClient;
     
-    public MqttClientAPI(String broker,int qos,String clientId) {
+    public MqttPublisherClient(String broker,int qos,String clientId) {
     	this.broker=broker;
     	this.qos=qos;
     	this.clientId=clientId;
@@ -38,7 +38,7 @@ public class MqttClientAPI {
 			
 		}
     }
-    public  MqttClientAPI() {
+    public  MqttPublisherClient() {
 		this("tcp://iot.eclipse.org:1883",2,"JavaSample");
 	}
     
