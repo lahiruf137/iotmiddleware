@@ -13,13 +13,15 @@ public class App
     Thread.sleep(500);
     iotsystem.setSelfAttribute("Light_1","on");
     iotsystem.setSelfAttribute("Light_2","off");
-    Thread.sleep(500);
+    
+    for(int i =0;i<10; i++) {
+    Thread.sleep(2000);
     for(String s: iotsystem.getNeighbours()){
       System.out.println("Neighbour : "+s);
       for (String attr: iotsystem.getNeighbourAttributes(s)) {
     	  System.out.println(attr+" : "+iotsystem.getNeighbourAttributeValue(s,attr));
       }
-    }    
+    }    }
     System.exit(0);
   }
   
