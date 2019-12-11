@@ -1,15 +1,15 @@
 package com.example.iotmiddleware;
 
 import java.rmi.Naming;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Set;
 
 import com.example.iotmiddleware.discovery.MdnsClient;
 import com.example.iotmiddleware.discovery.MdnsServer;
 import com.example.iotmiddleware.discovery.NeighbourDiscovery;
+import com.example.iotmiddleware.management.AttributeManagement;
 import com.example.iotmiddleware.management.RMIInterface;
 import com.example.iotmiddleware.management.RemoteOperationServer;
-import com.example.iotmiddleware.management.ServerOperation;
 
 public class IotCore {
 	public IotCore() throws Exception{
@@ -23,9 +23,8 @@ public class IotCore {
 		return NeighbourDiscovery.getneighbours();
 	}
 	
-	public Set<String> getNeighbourAttributes(String neighbour) {
-		System.out.println("here !");
-		Set<String> attributeList=new HashSet<String>();
+	public ArrayList<String> getNeighbourAttributes(String neighbour) {
+		ArrayList<String> attributeList=new ArrayList<String>();
 		try{
 		RMIInterface look_up= (RMIInterface) Naming.lookup("//"+neighbour+"/exampleservice");
 		attributeList = look_up.getAttributeList();
@@ -42,18 +41,26 @@ public class IotCore {
 		
 	}
 	
-	public String getNeighbourAttribute(String neighbour,String attribute) throws Exception {
+	public String getNeighbourAttributeValue(String neighbour,String attribute) throws Exception {
 		RMIInterface look_up= (RMIInterface) Naming.lookup("//"+neighbour+"/exampleservice");
 		String value = look_up.getAttribute(attribute);
 		return value;
 	}
 	
-	public void setSelfAttribute(String attribute,String value) {
-		ServerOperation.attributeList.put(attribute,value);
+	public ArrayList<String> getSelfAttributeList() throws Exception{
+		return new ArrayList<String>(AttributeManagement.getAttributeList());
 	}
-
-	public void removeSelfAttribute(String attribute) {
-		ServerOperation.attributeList.remove(attribute);
+	
+	public void setSelfAttribute(String attribute,String value) throws Exception {
+		AttributeManagement.setAttribute(attribute,value);
+	}
+	
+	public String getSelfAttributeValue(String attribute) throws Exception {
+		return AttributeManagement.getAttribute(attribute);
+	}
+	
+	public void removeSelfAttribute(String attribute) throws Exception {
+		AttributeManagement.unsetAttribute(attribute);
 	}
 
 }

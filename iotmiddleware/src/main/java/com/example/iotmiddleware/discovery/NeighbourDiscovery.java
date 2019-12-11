@@ -9,9 +9,11 @@ public class NeighbourDiscovery {
 	public static void addHost(String host) {
 		hostList.add(host);
 	}
+	
 	public static void removeHost(String host) {
 		hostList.remove(host);
 	}
+	
 	public static Set<String> getneighbours(){
 		return hostList;
 	}
