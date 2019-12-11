@@ -5,7 +5,7 @@ import java.util.LinkedHashSet;
 import java.util.Random;
 import java.util.Set;
 
-import com.example.iotmiddleware.remoteinvocation.RMIInterface;
+import com.example.iotmiddleware.management.RMIInterface;
 
 public class ExecutionEngine extends Thread {
 	

@@ -1,4 +1,4 @@
-package com.example.iotmiddleware.remoteinvocation;
+package com.example.iotmiddleware.management;
 
 public class ClientOperation {
 	private static RMIInterface look_up;

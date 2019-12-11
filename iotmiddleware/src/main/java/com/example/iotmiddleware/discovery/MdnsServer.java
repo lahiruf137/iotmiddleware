@@ -1,4 +1,4 @@
-package com.example.iotmiddleware.servicediscovery;
+package com.example.iotmiddleware.discovery;
 
 public class MdnsServer implements Runnable {
 	public void run() {

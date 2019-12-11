@@ -1,4 +1,4 @@
-package com.example.iotmiddleware.servicediscovery;
+package com.example.iotmiddleware.discovery;
 
 import javax.jmdns.ServiceEvent;
 import javax.jmdns.ServiceListener;

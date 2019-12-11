@@ -1,9 +1,7 @@
-package com.example.iotmiddleware;
+package com.example.iotmiddleware.management;
 
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
-
-import com.example.iotmiddleware.remoteinvocation.ServerOperation;
 
 public class RemoteOperationServer implements Runnable{
 	public void run() {

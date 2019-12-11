@@ -1,4 +1,4 @@
-package com.example.iotmiddleware.servicediscovery;
+package com.example.iotmiddleware.discovery;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
