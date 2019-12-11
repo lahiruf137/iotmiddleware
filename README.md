@@ -39,6 +39,7 @@ Later you may interact with neighbour devices as,
 ```
 
 ### Note
-This project uses JmDNS and Java RMI implementations. For more specific details of these projects see,  
+This project uses JmDNS and Java RMI implementations.  
+For more specific details of these projects see,  
 JmDNS [http://www.jmdns.org](http://www.jmdns.org)  
 Java RMI [https://docs.oracle.com/javase/tutorial/rmi/index.html](https://docs.oracle.com/javase/tutorial/rmi/index.html )
