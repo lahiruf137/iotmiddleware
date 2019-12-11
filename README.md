@@ -8,6 +8,31 @@ IoT middleware based on mDNS and Java RMI specifications
 * TCP Ports 8080, 1099 should be open on all hosts
 * Linux hosts should be running avahi-daemon 
 
+### Example implementation
+
+You may initilize middleware and add its own resources as follows
+
+```java
+    package com.example.iotmiddleware;
+    ...
+    IotCore iotsystem = new IotCore();
+    Thread.sleep(500);
+    iotsystem.setSelfAttribute("Light_1","on");
+```
+
+Later you may interact with neighbour devices as,
+
+```java
+    package com.example.iotmiddleware;
+    ...
+     for(String s: iotsystem.getNeighbours()){
+      System.out.println("Neighbour : "+n);
+      for (String attribute: iotsystem.getNeighbourAttributes(n)) {
+    	  System.out.println(attribute+" : "+iotsystem.getNeighbourAttributeValue(n,attribute));
+      }
+    } 
+```
+
 ### Note
 This project uses JmDNS and Java RMI implementations.
 
