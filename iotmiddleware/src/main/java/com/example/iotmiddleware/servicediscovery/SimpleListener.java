@@ -8,17 +8,17 @@ import com.example.iotmiddleware.ExecutionEngine;
 public class SimpleListener implements ServiceListener {
 	public synchronized void serviceAdded(ServiceEvent event) {
 		for (String host : event.getInfo().getHostAddresses()){
-			ExecutionEngine.addHost(host);
+			NeighbourDiscovery.addHost(host);
 		}		
 	}
      public synchronized void serviceRemoved(ServiceEvent event) {
     	 for (String host : event.getInfo().getHostAddresses()){
- 			ExecutionEngine.removeHost(host);
+    		 NeighbourDiscovery.removeHost(host);
  		}
      }
 	 public synchronized void serviceResolved(ServiceEvent event) {
 		 for (String host : event.getInfo().getHostAddresses()){
-				ExecutionEngine.addHost(host);
+			 NeighbourDiscovery.addHost(host);
 			}
 	 }
 	

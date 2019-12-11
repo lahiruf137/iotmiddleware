@@ -1,6 +1,7 @@
 package com.example.iotmiddleware;
 
-
+import com.example.iotmiddleware.servicediscovery.MdnsClient;
+import com.example.iotmiddleware.servicediscovery.MdnsServer;
 
 /**
  * iotmiddleware
