@@ -13,7 +13,7 @@ IoT middleware based on mDNS and Java RMI specifications
 You may initilize middleware and add its own resources as follows
 
 ```java
-    package com.example.iotmiddleware;
+    import com.example.iotmiddleware;
     ...
     IotCore iotsystem = new IotCore();
     Thread.sleep(500);
@@ -23,7 +23,7 @@ You may initilize middleware and add its own resources as follows
 Later you may interact with neighbour devices as,
 
 ```java
-    package com.example.iotmiddleware;
+    import com.example.iotmiddleware;
     ...
      for(String s: iotsystem.getNeighbours()){
       System.out.println("Neighbour : "+n);
@@ -31,6 +31,9 @@ Later you may interact with neighbour devices as,
     	  System.out.println(attribute+" : "+iotsystem.getNeighbourAttributeValue(n,attribute));
       }
     } 
+    ...
+    iotsystem.setNeighbourAttributes(negihbour,"light_1","off");
+    
 ```
 
 ### Note
