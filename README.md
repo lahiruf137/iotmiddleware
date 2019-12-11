@@ -25,6 +25,10 @@ Later you may interact with neighbour devices as,
 ```java
     import com.example.iotmiddleware;
     ...
+    // Note that IotCore() constructor is called only once
+    // IotCore iotsystem = new IotCore();
+    // Thread.sleep(500);
+    // 
      for(String s: iotsystem.getNeighbours()){
       System.out.println("Neighbour : "+n);
       for (String attribute: iotsystem.getNeighbourAttributes(n)) {
@@ -33,7 +37,7 @@ Later you may interact with neighbour devices as,
     } 
     ...
     iotsystem.setNeighbourAttributes(negihbour,"light_1","off");
-    
+
 ```
 
 ### Note
