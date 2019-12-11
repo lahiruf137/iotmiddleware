@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class AttributeManagement {
-	public static transient HashMap<String, String> attributeList = new HashMap<String, String>();
+	private static transient HashMap<String, String> attributeList = new HashMap<String, String>();
 	
 	public synchronized static Set<String> getAttributeList() throws RemoteException {
 		return attributeList.keySet();

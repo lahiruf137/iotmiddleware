@@ -14,7 +14,7 @@ public class ServerOperation extends UnicastRemoteObject implements RMIInterface
 	}
 	
 	public String helloTo(String name) throws RemoteException {
-		return "test";
+		return "hello "+name+" ;)";
 	}
 	
 	public synchronized ArrayList<String> getAttributeList() throws RemoteException {

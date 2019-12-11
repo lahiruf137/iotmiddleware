@@ -21,7 +21,6 @@ public class ServiceRegistration {
 		this.servicePort=servicePort;
 		
 		try {
-			System.out.println("Creating for "+InetAddress.getLocalHost());
             this.jmdns=JmDNS.create(InetAddress.getLocalHost());
             this.serviceInfo = ServiceInfo.create(this.serviceType, this.serviceName, this.servicePort, this.serviceDescription);
             this.jmdns.registerService(serviceInfo);
