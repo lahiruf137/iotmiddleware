@@ -3,7 +3,7 @@ IoT middleware based on mDNS and Java RMI specifications
 
 ### Prerequisites for running 
 * Hostnames should be configured on all hosts running middleware
-* All hosts must be reachable on the desired netwaork(IPv4/IPv6)
+* All hosts must be reachable on the desired netwaork (IPv4/IPv6) and multicast traffic should be allowed
 * Requires Java runtime 1.8 or later
 * TCP Ports 8080, 1099 should be open on all hosts
 * Linux hosts should be running avahi-daemon 
@@ -16,7 +16,6 @@ You may initilize middleware and add its own resources as follows
     import com.example.iotmiddleware;
     ...
     IotCore iotsystem = new IotCore();
-    Thread.sleep(500);
     iotsystem.setSelfAttribute("Light_1","on");
 
 ```
@@ -28,7 +27,6 @@ Later you may interact with neighbour devices as,
     ...
     // Note that IotCore() constructor is only called once
     // IotCore iotsystem = new IotCore();
-    // Thread.sleep(500);
      for(String s: iotsystem.getNeighbours()){
       System.out.println("Neighbour : "+n);
       for (String attribute: iotsystem.getNeighbourAttributes(n)) {
