@@ -18,7 +18,6 @@ public class NeighbourDiscovery {
 	private ServiceListener serviceListener;
 	private static JmDNS jmdns;
 	String iotcore_serv_type;
-	boolean isUpdating=false;
 	private static final Logger logger = LoggerFactory.getLogger(NeighbourDiscovery.class);
 	public NeighbourDiscovery(String iotcore_serv_type) throws Exception {
 		this.iotcore_serv_type=iotcore_serv_type;
@@ -26,36 +25,26 @@ public class NeighbourDiscovery {
 	}
 	
 	public Set<String> getNeighbours() throws Exception{
-		Set<String> r = null;
-		while(true) {
-			if(!isUpdating) {
-				r=hostList;
-				break;
-			}
-			else {
-				Thread.sleep(500);
-			}
-		}
-		return r;
+		return hostList;
 	}
 	
 	class NeighbourListener implements ServiceListener {
 		public void serviceAdded(ServiceEvent event) {
 			for (String host : event.getInfo().getHostAddresses()){
 				hostList.add(host);
-				logger.info("added"+host);
+				logger.debug("added"+host);
 			}		
 		}
 	     public void serviceRemoved(ServiceEvent event) {
 	    	 for (String host : event.getInfo().getHostAddresses()){
 	    		 hostList.remove(host);
-	    		 logger.info("removed"+host);
+	    		 logger.debug("removed"+host);
 	 		}
 	     }
 		 public void serviceResolved(ServiceEvent event) {
 			 for (String host : event.getInfo().getHostAddresses()){
 				 hostList.add(host);
-				 logger.info("resolved"+host);
+				 logger.debug("resolved"+host);
 				}
 		 }
 	}
@@ -71,12 +60,10 @@ public class NeighbourDiscovery {
 			
 			while (true) {
 				try {
-					isUpdating=true;
 					hostList=new LinkedHashSet<String>();
 					serviceListener=new NeighbourListener();
 					jmdns=JmDNS.create(InetAddress.getLocalHost());
 					jmdns.addServiceListener(iotcore_serv_type, serviceListener);
-					isUpdating=false;
 					Thread.sleep(5000);
 					
 				} catch (Exception e) {
