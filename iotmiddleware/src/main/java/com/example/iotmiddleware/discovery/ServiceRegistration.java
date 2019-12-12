@@ -13,15 +13,15 @@ public class ServiceRegistration {
 	private static String serviceDescription="example-description";
 	private static int servicePort=8080;
 
-	public static void  RegisterService(String type,String name,String description, int port) throws Exception {
+	public static void  registerService(String type,String name,String description, int port) throws Exception {
 		serviceType=type;
 		serviceName=name;
 		serviceDescription=description;
 		servicePort=port;
-		RegisterService();
+		registerService();
 		
 	}
-	public static void RegisterService() throws Exception {
+	public static void registerService() throws Exception {
             jmdns=JmDNS.create(InetAddress.getLocalHost());
             serviceInfo = ServiceInfo.create(serviceType, serviceName, servicePort, serviceDescription);
             jmdns.registerService(serviceInfo);

@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import com.example.iotmiddleware.discovery.MdnsClient;
 import com.example.iotmiddleware.discovery.MdnsServer;
 import com.example.iotmiddleware.discovery.NeighbourDiscovery;
+import com.example.iotmiddleware.discovery.ServiceDiscovery;
+import com.example.iotmiddleware.discovery.ServiceRegistration;
 import com.example.iotmiddleware.management.AttributeManagement;
 import com.example.iotmiddleware.management.RMIInterface;
 import com.example.iotmiddleware.management.RemoteOperationServer;
@@ -19,11 +21,30 @@ import com.example.iotmiddleware.management.OnEventListener;
 public class IotCore {
 	private static final Logger logger = LoggerFactory.getLogger(IotCore.class);
 	public IotCore(OnEventListener evntl) throws Exception {
-		  new Thread(new MdnsServer()).start();
-	      new Thread(new MdnsClient()).start();
+		  //new Thread(new MdnsServer()).start();
+	      //new Thread(new MdnsClient()).start();
+		ServiceRegistration.registerService();
+		ServiceDiscovery.startDiscovery();
 	      new Thread(new RemoteOperationServer()).start();
 	      Thread.sleep(5000);
 	      AttributeManagement.registerEventListner(evntl);
+	      
+	      Runtime.getRuntime().addShutdownHook(new Thread() {
+	          public void run() {
+	      		try {
+					ServiceRegistration.unregisterAllServices();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    		try {
+					ServiceDiscovery.stopDiscovery();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	          }
+	        });
 	}
 	public IotCore() throws Exception{
 	      this(new RefrenceEventLister());
@@ -67,6 +88,11 @@ public class IotCore {
 	
 	public void removeSelfAttribute(String attribute) throws Exception {
 		AttributeManagement.unsetAttribute(attribute);
+	}
+	
+	public void disconnect() throws Exception {
+		ServiceRegistration.unregisterAllServices();
+		ServiceDiscovery.stopDiscovery();
 	}
 	
 	static class RefrenceEventLister implements OnEventListener{
