@@ -38,6 +38,25 @@ Later you may interact with neighbour devices as,
 
 ```
 
+Implement callback methods to get notified when other neghibours update self  attributes
+
+```java
+    import com.example.iotmiddleware;
+    import com.example.iotmiddleware.management.OnEventListener;
+    ...
+    class OnEventAction implements OnEventListener{
+	    public void onAttributeSet(String key, String value) {
+		    System.out.println("Attribuet set "+key+":"+value);
+	    }
+	    public void onAttributeUnset(String key) {
+		    System.out.println("Attribute unset"+key);
+	    }
+    }
+    ...
+    IotCore iotsystem = new IotCore(new OnEventAction());
+
+```
+
 ### Note
 This project uses JmDNS and Java RMI implementations.  
 For more specific details of these projects see,  
