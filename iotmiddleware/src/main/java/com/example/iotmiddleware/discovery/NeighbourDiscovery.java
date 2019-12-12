@@ -10,7 +10,6 @@ import javax.jmdns.ServiceListener;
 
 public class NeighbourDiscovery {
 	private Set<String> hostList;
-	private final String serviceType="_example._tcp.local.";
 	private ServiceListener serviceListener;
 	
 	public NeighbourDiscovery() {
@@ -19,8 +18,8 @@ public class NeighbourDiscovery {
 		
 	}
 	
-	public Set<String> getNeighbours() throws Exception{
-		JmDNS.create(InetAddress.getLocalHost()).addServiceListener(serviceType, serviceListener);
+	public Set<String> getNeighbours(String iotcore_serv_type) throws Exception{
+		JmDNS.create(InetAddress.getLocalHost()).addServiceListener(iotcore_serv_type, serviceListener);
 		Thread.sleep(5000);
 		return hostList;
 	}

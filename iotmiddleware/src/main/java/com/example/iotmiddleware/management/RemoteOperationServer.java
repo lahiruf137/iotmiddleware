@@ -10,11 +10,16 @@ import org.slf4j.LoggerFactory;
 import com.example.iotmiddleware.IotCore;
 
 public class RemoteOperationServer implements Runnable{
+	private String iotcore_inst_name;
+	public RemoteOperationServer(Object inst_name) {
+		this.iotcore_inst_name=(String) inst_name;
+		
+	}
 	private static final Logger logger = LoggerFactory.getLogger(RemoteOperationServer.class);
 	public void run() {
 		try {
 			LocateRegistry.createRegistry(1099);
-			Naming.rebind("//"+InetAddress.getLocalHost().getHostAddress()+"/exampleservice", new ServerOperation());
+			Naming.rebind("//"+InetAddress.getLocalHost().getHostAddress()+"/"+this.iotcore_inst_name, new ServerOperation());
 			
 			}catch (Exception e) {
 				logger.error("unable to strart remote operations server "+e.getMessage());
