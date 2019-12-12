@@ -34,7 +34,6 @@ public class App
 	      }
 	  } 
   }
-  
 }
 
 class OnEventAction implements OnEventListener{
