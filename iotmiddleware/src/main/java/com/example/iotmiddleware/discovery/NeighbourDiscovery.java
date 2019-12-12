@@ -24,10 +24,20 @@ public class NeighbourDiscovery {
 		new Thread(new MdnsUpdater()).start();
 	}
 	
-	public Set<String> getNeighbours() throws Exception{
+	public synchronized Set<String> getNeighbours() throws Exception{
 		return hostList;
 	}
 	
+	public synchronized void  updateNeighbours() {
+		try {
+			hostList=new LinkedHashSet<String>();
+			serviceListener=new NeighbourListener();
+			jmdns=JmDNS.create(InetAddress.getLocalHost());
+			jmdns.addServiceListener(iotcore_serv_type, serviceListener);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		} 
+	}
 	
 	class NeighbourListener implements ServiceListener {
 		public void serviceAdded(ServiceEvent event) {
@@ -58,17 +68,15 @@ public class NeighbourDiscovery {
 	*/
 	class MdnsUpdater implements Runnable{
 		public void run() {
+			
 			while (true) {
+				
 				try {
-					hostList=new LinkedHashSet<String>();
-					serviceListener=new NeighbourListener();
-					jmdns=JmDNS.create(InetAddress.getLocalHost());
-					jmdns.addServiceListener(iotcore_serv_type, serviceListener);
+					updateNeighbours();
 					Thread.sleep(5000);
 				} catch (Exception e) {
 					logger.error(e.getMessage());
-				} 
-				
+				}
 			}
 		}
 	}
