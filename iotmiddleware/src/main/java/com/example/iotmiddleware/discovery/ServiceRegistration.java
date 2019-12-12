@@ -8,20 +8,23 @@ import javax.jmdns.ServiceInfo;
 public class ServiceRegistration {
 	
 	private static JmDNS jmdns;
+	private ServiceInfo serviceInfo;
 	
 	public ServiceRegistration(String type,String name,String description, int port) throws Exception {
-		ServiceInfo serviceInfo = ServiceInfo.create(type, name, port, description);
+		serviceInfo = ServiceInfo.create(type, name, port, description);
 		jmdns=JmDNS.create(InetAddress.getLocalHost());
 		jmdns.registerService(serviceInfo);
 	}
 
-	public static void  registerService(String type,String name,String description, int port) throws Exception {		
-		ServiceInfo serviceInfo = ServiceInfo.create(type, name, port, description);
+	public  void  registerService(String type,String name,String description, int port) throws Exception {		
+		serviceInfo = ServiceInfo.create(type, name, port, description);
         JmDNS.create(InetAddress.getLocalHost()).registerService(serviceInfo);		
 	}
 
 	public  void unregisterAllServices() throws Exception{
 		//JmDNS.create(InetAddress.getLocalHost()).unregisterAllServices();
-		jmdns.unregisterAllServices();
+		//jmdns.unregisterAllServices();
+		jmdns.unregisterService(serviceInfo);
  	}
+	
 }
