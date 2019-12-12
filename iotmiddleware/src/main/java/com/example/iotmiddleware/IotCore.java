@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 
 import com.example.iotmiddleware.discovery.NeighbourDiscovery;
+import com.example.iotmiddleware.discovery.NewNeighbourDiscovery;
 import com.example.iotmiddleware.discovery.ServiceRegistration;
 import com.example.iotmiddleware.management.AttributeManagement;
 import com.example.iotmiddleware.management.RMIInterface;
@@ -22,19 +23,21 @@ public class IotCore {
 	private final String iotcore_serv_name="example-service";
 	private final String iotcore_serv_desc="example-service";
 	private final int iotcore_serv_port=8080;
+	private NewNeighbourDiscovery nnd;
 	private static final Logger logger = LoggerFactory.getLogger(IotCore.class);
 
 	
 	public IotCore(OnEventListener evntl) throws Exception {
 		ServiceRegistration.registerService(iotcore_serv_type,iotcore_serv_name,iotcore_serv_desc,iotcore_serv_port);
 	      new Thread(new RemoteOperationServer(iotcore_inst_name)).start();
-	      Thread.sleep(1000);
+	      nnd=new NewNeighbourDiscovery(iotcore_serv_type);
 	      AttributeManagement.registerEventListner(evntl);
 	      
 	      Runtime.getRuntime().addShutdownHook(new Thread() {
 	          public void run() {
 	      		try {
 					ServiceRegistration.unregisterAllServices();
+					Thread.sleep(2000);
 					logger.debug("Unregesterd instance");
 				} catch (Exception e) {
 					logger.error("error occored while unregrestering");
@@ -48,7 +51,8 @@ public class IotCore {
 		}
 	
 	public Set<String> getNeighbours() throws Exception{
-		return new NeighbourDiscovery().getNeighbours(iotcore_serv_type);
+		//return new NeighbourDiscovery().getNeighbours(iotcore_serv_type);
+		return nnd.getNeighbours();
 	}
 	
 	public ArrayList<String> getNeighbourAttributes(String neighbour) throws Exception {
