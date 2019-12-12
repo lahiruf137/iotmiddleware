@@ -8,19 +8,23 @@ import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceEvent;
 import javax.jmdns.ServiceListener;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+
 public class NeighbourDiscovery {
 	private Set<String> hostList;
 	private ServiceListener serviceListener;
-	
-	public NeighbourDiscovery() {
-		hostList=new LinkedHashSet<String>();
-		serviceListener=new NeighbourListener();
-		
+	private static JmDNS jmdns;
+	String iotcore_serv_type;
+	private static final Logger logger = LoggerFactory.getLogger(NeighbourDiscovery.class);
+	public NeighbourDiscovery(String iotcore_serv_type) throws Exception {
+		this.iotcore_serv_type=iotcore_serv_type;
+		new Thread(new MdnsUpdater()).start();
 	}
 	
-	public Set<String> getNeighbours(String iotcore_serv_type) throws Exception{
-		JmDNS.create(InetAddress.getLocalHost()).addServiceListener(iotcore_serv_type, serviceListener);
-		Thread.sleep(5000);
+	public Set<String> getNeighbours() throws Exception{
 		return hostList;
 	}
 	
@@ -29,18 +33,44 @@ public class NeighbourDiscovery {
 		public void serviceAdded(ServiceEvent event) {
 			for (String host : event.getInfo().getHostAddresses()){
 				hostList.add(host);
+				logger.debug("added"+host);
 			}		
 		}
-	     public synchronized void serviceRemoved(ServiceEvent event) {
+	     public void serviceRemoved(ServiceEvent event) {
 	    	 for (String host : event.getInfo().getHostAddresses()){
 	    		 hostList.remove(host);
+	    		 logger.debug("removed"+host);
 	 		}
 	     }
-		 public synchronized void serviceResolved(ServiceEvent event) {
+		 public void serviceResolved(ServiceEvent event) {
 			 for (String host : event.getInfo().getHostAddresses()){
 				 hostList.add(host);
+				 logger.debug("resolved"+host);
 				}
 		 }
+	}
+	
+	/*
+	 * 
+	 * This part is only required due to jmdns Open issue https://github.com/jmdns/jmdns/issues/18
+	 * Move code inside try block to NeighbourDiscovery constructor when fixed
+	 * 
+	*/
+	class MdnsUpdater implements Runnable{
+		public void run() {
+			while (true) {
+				try {
+					hostList=new LinkedHashSet<String>();
+					serviceListener=new NeighbourListener();
+					jmdns=JmDNS.create(InetAddress.getLocalHost());
+					jmdns.addServiceListener(iotcore_serv_type, serviceListener);
+					Thread.sleep(5000);
+				} catch (Exception e) {
+					logger.error(e.getMessage());
+				} 
+				
+			}
+		}
 	}
 	
 }

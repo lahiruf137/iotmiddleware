@@ -14,6 +14,8 @@ public class ServiceRegistration {
 		serviceInfo = ServiceInfo.create(type, name, port, description);
 		jmdns=JmDNS.create(InetAddress.getLocalHost());
 		jmdns.registerService(serviceInfo);
+		
+		
 	}
 
 	public  void  registerService(String type,String name,String description, int port) throws Exception {		
@@ -22,9 +24,7 @@ public class ServiceRegistration {
 	}
 
 	public  void unregisterAllServices() throws Exception{
-		//JmDNS.create(InetAddress.getLocalHost()).unregisterAllServices();
-		//jmdns.unregisterAllServices();
-		jmdns.unregisterService(serviceInfo);
+		jmdns.unregisterAllServices();
  	}
 	
 }

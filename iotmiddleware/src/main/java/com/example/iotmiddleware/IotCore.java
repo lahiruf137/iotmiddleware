@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 
 import com.example.iotmiddleware.discovery.NeighbourDiscovery;
-import com.example.iotmiddleware.discovery.NewNeighbourDiscovery;
+import com.example.iotmiddleware.discovery.NeighbourDiscovery;
 import com.example.iotmiddleware.discovery.ServiceRegistration;
 import com.example.iotmiddleware.management.AttributeManagement;
 import com.example.iotmiddleware.management.RMIInterface;
@@ -23,14 +23,14 @@ public class IotCore {
 	private final String iotcore_serv_name="example-service";
 	private final String iotcore_serv_desc="example-service";
 	private final int iotcore_serv_port=8080;
-	private NewNeighbourDiscovery nnd;
-	ServiceRegistration sr;
+	private NeighbourDiscovery neighbourDiscovery;
+	ServiceRegistration serviceRegistration;
 	private static final Logger logger = LoggerFactory.getLogger(IotCore.class);
 
 	
 	public IotCore(OnEventListener evntl) throws Exception {
-		sr=new ServiceRegistration(iotcore_serv_type,iotcore_serv_name,iotcore_serv_desc,iotcore_serv_port);
-		nnd=new NewNeighbourDiscovery(iotcore_serv_type);
+		serviceRegistration=new ServiceRegistration(iotcore_serv_type,iotcore_serv_name,iotcore_serv_desc,iotcore_serv_port);
+		neighbourDiscovery=new NeighbourDiscovery(iotcore_serv_type);
 	    new Thread(new RemoteOperationServer(iotcore_inst_name)).start();
 	      
 	      AttributeManagement.registerEventListner(evntl);
@@ -38,8 +38,7 @@ public class IotCore {
 	      Runtime.getRuntime().addShutdownHook(new Thread() {
 	          public void run() {
 	      		try {
-					sr.unregisterAllServices();
-					Thread.sleep(2000);
+	      			serviceRegistration.unregisterAllServices();
 					logger.info("Unregesterd instance");
 				} catch (Exception e) {
 					logger.error("error occored while unregrestering");
@@ -53,8 +52,7 @@ public class IotCore {
 		}
 	
 	public Set<String> getNeighbours() throws Exception{
-		//return new NeighbourDiscovery().getNeighbours(iotcore_serv_type);
-		return nnd.getNeighbours();
+		return neighbourDiscovery.getNeighbours();
 	}
 	
 	public ArrayList<String> getNeighbourAttributes(String neighbour) throws Exception {
