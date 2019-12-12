@@ -8,17 +8,19 @@ import javax.jmdns.ServiceListener;
 public class SimpleListener implements ServiceListener {
 	public synchronized void serviceAdded(ServiceEvent event) {
 		for (String host : event.getInfo().getHostAddresses()){
-			NeighbourDiscovery.addHost(host);
+			//NeighbourDiscovery.addHost(host);
 		}		
 	}
      public synchronized void serviceRemoved(ServiceEvent event) {
     	 for (String host : event.getInfo().getHostAddresses()){
     		 NeighbourDiscovery.removeHost(host);
+    		 System.out.println("removed"+host);
  		}
      }
 	 public synchronized void serviceResolved(ServiceEvent event) {
 		 for (String host : event.getInfo().getHostAddresses()){
 			 NeighbourDiscovery.addHost(host);
+			 System.out.println("added"+host);
 			}
 	 }
 	

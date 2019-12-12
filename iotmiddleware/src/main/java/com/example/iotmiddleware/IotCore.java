@@ -33,12 +33,14 @@ public class IotCore {
 	          public void run() {
 	      		try {
 					ServiceRegistration.unregisterAllServices();
+					System.out.println("here");
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 	    		try {
 					ServiceDiscovery.stopDiscovery();
+					System.out.println("here2");
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

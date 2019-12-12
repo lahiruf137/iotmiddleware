@@ -22,12 +22,12 @@ public class ServiceRegistration {
 		
 	}
 	public static void registerService() throws Exception {
-            jmdns=JmDNS.create(InetAddress.getLocalHost());
+            //jmdns=JmDNS.create(InetAddress.getLocalHost());
             serviceInfo = ServiceInfo.create(serviceType, serviceName, servicePort, serviceDescription);
-            jmdns.registerService(serviceInfo);
+            JmDNS.create(InetAddress.getLocalHost()).registerService(serviceInfo);
 	}
 
 	public static void unregisterAllServices() throws Exception{
-            jmdns.unregisterAllServices();
+		JmDNS.create(InetAddress.getLocalHost()).unregisterAllServices();
  	}
 }

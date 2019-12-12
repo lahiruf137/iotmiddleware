@@ -17,11 +17,10 @@ public class ServiceDiscovery {
 	}
 	
 	public static void startDiscovery() throws Exception{
-		jmdns = JmDNS.create(InetAddress.getLocalHost());
-		jmdns.addServiceListener(serviceType, serviceListener);
+		JmDNS.create(InetAddress.getLocalHost()).addServiceListener(serviceType, serviceListener);
 	}
 	public static void stopDiscovery() throws Exception {
-		jmdns.removeServiceListener(serviceType,serviceListener);
+		JmDNS.create(InetAddress.getLocalHost()).removeServiceListener(serviceType,serviceListener);
 	}
 	
 
