@@ -5,25 +5,23 @@ import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceListener;
 
 public class ServiceDiscovery {
-	private JmDNS jmdns;
-	private String serviceType;
-	private ServiceListener serviceListener;
-	public ServiceDiscovery(String serviceType,ServiceListener  serviceListener) {
-		this.serviceType=serviceType;
-		this.serviceListener=serviceListener;
-		try {
-			jmdns = JmDNS.create(InetAddress.getLocalHost());
-			jmdns.addServiceListener(this.serviceType, this.serviceListener);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
+	private static JmDNS jmdns;
+	private static String serviceType="_example._tcp.local.";
+	private static ServiceListener serviceListener=new SimpleListener();
+	
+	
+	public static void startDiscovery(String type,ServiceListener  listener) throws Exception{
+		serviceType=type;
+		serviceListener=listener;
+		startDiscovery();
 	}
 	
-	public ServiceDiscovery() {
-		this("_example._tcp.local.",new SimpleListener());
+	public static void startDiscovery() throws Exception{
+		jmdns = JmDNS.create(InetAddress.getLocalHost());
+		jmdns.addServiceListener(serviceType, serviceListener);
 	}
-	public void stopDiscovery() {
-		jmdns.removeServiceListener(this.serviceType,this.serviceListener);
+	public static void stopDiscovery() throws Exception {
+		jmdns.removeServiceListener(serviceType,serviceListener);
 	}
 	
 

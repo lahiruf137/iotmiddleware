@@ -6,39 +6,28 @@ import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
 
 public class ServiceRegistration {
-	private JmDNS jmdns;
-	private ServiceInfo serviceInfo;
-	private String serviceType;
-	private String serviceName;
-	private String serviceDescription;
-	private int servicePort;
+	private static JmDNS jmdns;
+	private static ServiceInfo serviceInfo;
+	private static String serviceType="_example._tcp.local.";
+	private static String serviceName="example-service";
+	private static String serviceDescription="example-description";
+	private static int servicePort=8080;
 
-	public ServiceRegistration(String serviceType,String serviceName,String serviceDescription, int servicePort) {
+	public static void  RegisterService(String type,String name,String description, int port) throws Exception {
+		serviceType=type;
+		serviceName=name;
+		serviceDescription=description;
+		servicePort=port;
+		RegisterService();
 		
-		this.serviceType=serviceType;
-		this.serviceName=serviceName;
-		this.serviceDescription=serviceDescription;
-		this.servicePort=servicePort;
-		
-		try {
-            this.jmdns=JmDNS.create(InetAddress.getLocalHost());
-            this.serviceInfo = ServiceInfo.create(this.serviceType, this.serviceName, this.servicePort, this.serviceDescription);
-            this.jmdns.registerService(serviceInfo);
+	}
+	public static void RegisterService() throws Exception {
+            jmdns=JmDNS.create(InetAddress.getLocalHost());
+            serviceInfo = ServiceInfo.create(serviceType, serviceName, servicePort, serviceDescription);
+            jmdns.registerService(serviceInfo);
+	}
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-		
-	}
-	public ServiceRegistration() {
-		this("_example._tcp.local.","example-service","example-description",8080);
-	}
-	public void unregisterAllServices() {
-		
-		try {
-            this.jmdns.unregisterAllServices();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-	}
+	public static void unregisterAllServices() throws Exception{
+            jmdns.unregisterAllServices();
+ 	}
 }
