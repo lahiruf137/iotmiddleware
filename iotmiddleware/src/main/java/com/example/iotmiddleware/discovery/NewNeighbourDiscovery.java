@@ -17,7 +17,7 @@ import com.example.iotmiddleware.IotCore;
 public class NewNeighbourDiscovery {
 	private Set<String> hostList;
 	private ServiceListener serviceListener;
-	private static final Logger logger = LoggerFactory.getLogger(IotCore.class);
+	private static final Logger logger = LoggerFactory.getLogger(NewNeighbourDiscovery.class);
 	public NewNeighbourDiscovery(String iotcore_serv_type) throws Exception {
 		hostList=new LinkedHashSet<String>();
 		serviceListener=new NeighbourListener();
@@ -36,13 +36,13 @@ public class NewNeighbourDiscovery {
 				logger.info("added"+host);
 			}		
 		}
-	     public synchronized void serviceRemoved(ServiceEvent event) {
+	     public void serviceRemoved(ServiceEvent event) {
 	    	 for (String host : event.getInfo().getHostAddresses()){
 	    		 hostList.remove(host);
 	    		 logger.info("removed"+host);
 	 		}
 	     }
-		 public synchronized void serviceResolved(ServiceEvent event) {
+		 public void serviceResolved(ServiceEvent event) {
 			 for (String host : event.getInfo().getHostAddresses()){
 				 hostList.add(host);
 				 logger.info("resolved"+host);
