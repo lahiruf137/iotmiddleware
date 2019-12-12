@@ -29,9 +29,9 @@ public class App
   public static void printNeighbourInfo(IotCore iotsystem) throws Exception {
 	  for(String s: iotsystem.getNeighbours()){
 	      System.out.println("Neighbour : "+s);
-	      //for (String attr: iotsystem.getNeighbourAttributes(s)) {
-	    //	  System.out.println(attr+" : "+iotsystem.getNeighbourAttributeValue(s,attr));
-	     // }
+	      for (String attr: iotsystem.getNeighbourAttributes(s)) {
+	    	  System.out.println(attr+" : "+iotsystem.getNeighbourAttributeValue(s,attr));
+	      }
 	  } 
   }
   

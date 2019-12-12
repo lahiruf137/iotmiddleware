@@ -7,10 +7,8 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.example.iotmiddleware.discovery.MdnsClient;
-import com.example.iotmiddleware.discovery.MdnsServer;
+
 import com.example.iotmiddleware.discovery.NeighbourDiscovery;
-import com.example.iotmiddleware.discovery.ServiceDiscovery;
 import com.example.iotmiddleware.discovery.ServiceRegistration;
 import com.example.iotmiddleware.management.AttributeManagement;
 import com.example.iotmiddleware.management.RMIInterface;
@@ -21,38 +19,30 @@ import com.example.iotmiddleware.management.OnEventListener;
 public class IotCore {
 	private static final Logger logger = LoggerFactory.getLogger(IotCore.class);
 	public IotCore(OnEventListener evntl) throws Exception {
-		  //new Thread(new MdnsServer()).start();
-	      //new Thread(new MdnsClient()).start();
 		ServiceRegistration.registerService();
-		ServiceDiscovery.startDiscovery();
 	      new Thread(new RemoteOperationServer()).start();
-	      Thread.sleep(5000);
+	      Thread.sleep(1000);
 	      AttributeManagement.registerEventListner(evntl);
 	      
 	      Runtime.getRuntime().addShutdownHook(new Thread() {
 	          public void run() {
 	      		try {
 					ServiceRegistration.unregisterAllServices();
-					System.out.println("here");
+					logger.debug("Unregesterd instance");
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	    		try {
-					ServiceDiscovery.stopDiscovery();
-					System.out.println("here2");
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logger.error("error occored while unregrestering");
 				}
 	          }
 	        });
 	}
+	
 	public IotCore() throws Exception{
 	      this(new RefrenceEventLister());
 		}
-	public Set<String> getNeighbours() {
-		return NeighbourDiscovery.getneighbours();
+	
+	
+	public Set<String> getNeighbours() throws Exception{
+		return new NeighbourDiscovery().getNeighbours();
 	}
 	
 	public ArrayList<String> getNeighbourAttributes(String neighbour) throws Exception {
@@ -92,10 +82,6 @@ public class IotCore {
 		AttributeManagement.unsetAttribute(attribute);
 	}
 	
-	public void disconnect() throws Exception {
-		ServiceRegistration.unregisterAllServices();
-		ServiceDiscovery.stopDiscovery();
-	}
 	
 	static class RefrenceEventLister implements OnEventListener{
 		public void onAttributeSet(String key, String value) {
