@@ -22,11 +22,7 @@ public class NeighbourDiscovery {
 	private static final Logger logger = LoggerFactory.getLogger(NeighbourDiscovery.class);
 	public NeighbourDiscovery(String iotcore_serv_type) throws Exception {
 		this.iotcore_serv_type=iotcore_serv_type;
-		hostList=new LinkedHashSet<String>();
-		serviceListener=new NeighbourListener();
-		jmdns=JmDNS.create(InetAddress.getLocalHost());
-		jmdns.addServiceListener(iotcore_serv_type, serviceListener);
-		//new Thread(new MdnsUpdater()).start();
+		new Thread(new MdnsUpdater()).start();
 	}
 	
 	public Set<String> getNeighbours() throws Exception{
