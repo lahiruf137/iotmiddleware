@@ -24,21 +24,23 @@ public class IotCore {
 	private final String iotcore_serv_desc="example-service";
 	private final int iotcore_serv_port=8080;
 	private NewNeighbourDiscovery nnd;
+	ServiceRegistration sr;
 	private static final Logger logger = LoggerFactory.getLogger(IotCore.class);
 
 	
 	public IotCore(OnEventListener evntl) throws Exception {
-		ServiceRegistration.registerService(iotcore_serv_type,iotcore_serv_name,iotcore_serv_desc,iotcore_serv_port);
-	      new Thread(new RemoteOperationServer(iotcore_inst_name)).start();
-	      nnd=new NewNeighbourDiscovery(iotcore_serv_type);
+		sr=new ServiceRegistration(iotcore_serv_type,iotcore_serv_name,iotcore_serv_desc,iotcore_serv_port);
+		nnd=new NewNeighbourDiscovery(iotcore_serv_type);
+	    new Thread(new RemoteOperationServer(iotcore_inst_name)).start();
+	      
 	      AttributeManagement.registerEventListner(evntl);
 	      
 	      Runtime.getRuntime().addShutdownHook(new Thread() {
 	          public void run() {
 	      		try {
-					ServiceRegistration.unregisterAllServices();
+					sr.unregisterAllServices();
 					Thread.sleep(2000);
-					logger.debug("Unregesterd instance");
+					logger.info("Unregesterd instance");
 				} catch (Exception e) {
 					logger.error("error occored while unregrestering");
 				}

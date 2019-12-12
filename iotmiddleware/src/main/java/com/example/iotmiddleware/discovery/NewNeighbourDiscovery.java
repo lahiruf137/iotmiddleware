@@ -8,11 +8,16 @@ import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceEvent;
 import javax.jmdns.ServiceListener;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.example.iotmiddleware.IotCore;
+
 
 public class NewNeighbourDiscovery {
 	private Set<String> hostList;
 	private ServiceListener serviceListener;
-	
+	private static final Logger logger = LoggerFactory.getLogger(IotCore.class);
 	public NewNeighbourDiscovery(String iotcore_serv_type) throws Exception {
 		hostList=new LinkedHashSet<String>();
 		serviceListener=new NeighbourListener();
@@ -28,16 +33,19 @@ public class NewNeighbourDiscovery {
 		public void serviceAdded(ServiceEvent event) {
 			for (String host : event.getInfo().getHostAddresses()){
 				hostList.add(host);
+				logger.info("added"+host);
 			}		
 		}
 	     public synchronized void serviceRemoved(ServiceEvent event) {
 	    	 for (String host : event.getInfo().getHostAddresses()){
 	    		 hostList.remove(host);
+	    		 logger.info("removed"+host);
 	 		}
 	     }
 		 public synchronized void serviceResolved(ServiceEvent event) {
 			 for (String host : event.getInfo().getHostAddresses()){
 				 hostList.add(host);
+				 logger.info("resolved"+host);
 				}
 		 }
 	}

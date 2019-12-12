@@ -6,13 +6,22 @@ import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
 
 public class ServiceRegistration {
+	
+	private static JmDNS jmdns;
+	
+	public ServiceRegistration(String type,String name,String description, int port) throws Exception {
+		ServiceInfo serviceInfo = ServiceInfo.create(type, name, port, description);
+		jmdns=JmDNS.create(InetAddress.getLocalHost());
+		jmdns.registerService(serviceInfo);
+	}
 
 	public static void  registerService(String type,String name,String description, int port) throws Exception {		
 		ServiceInfo serviceInfo = ServiceInfo.create(type, name, port, description);
         JmDNS.create(InetAddress.getLocalHost()).registerService(serviceInfo);		
 	}
 
-	public static void unregisterAllServices() throws Exception{
-		JmDNS.create(InetAddress.getLocalHost()).unregisterAllServices();
+	public  void unregisterAllServices() throws Exception{
+		//JmDNS.create(InetAddress.getLocalHost()).unregisterAllServices();
+		jmdns.unregisterAllServices();
  	}
 }
