@@ -20,7 +20,9 @@ public class App
     
     while(true) {
     	System.out.println("Enter to view neighbours or Ctrl+c to exit");
-    	new Scanner(System.in).nextLine();
+    	Scanner sc =new Scanner(System.in);
+    	sc.nextLine();
+    	sc.close();
     	printNeighbourInfo(iotsystem);
     }
     
