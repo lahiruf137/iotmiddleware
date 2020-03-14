@@ -7,8 +7,6 @@ import java.rmi.registry.LocateRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.example.iotmiddleware.IotCore;
-
 public class RemoteOperationServer implements Runnable{
 	private String iotcore_inst_name;
 	public RemoteOperationServer(Object inst_name) {

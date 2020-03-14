@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 
 
 import com.example.iotmiddleware.discovery.NeighbourDiscovery;
-import com.example.iotmiddleware.discovery.NeighbourDiscovery;
 import com.example.iotmiddleware.discovery.ServiceRegistration;
 import com.example.iotmiddleware.management.AttributeManagement;
 import com.example.iotmiddleware.management.RMIInterface;
