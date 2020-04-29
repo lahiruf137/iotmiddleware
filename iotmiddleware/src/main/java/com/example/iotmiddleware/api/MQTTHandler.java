@@ -1,66 +1,65 @@
 package com.example.iotmiddleware.api;
 
+import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-public class MqttPublisherClient {
-	
-
+public class MQTTHandler {
     private int qos;
-    private String broker;
     private String clientId;
-    MemoryPersistence persistence;
+    private String broker;
+    private MemoryPersistence persistence;
+    private MqttClient sampleClient;
     
-    MqttClient sampleClient;
-    
-    public MqttPublisherClient(String broker,int qos,String clientId) {
-    	this.broker=broker;
+    public MQTTHandler(String brokerURL, int qos,String clientId, MqttCallback callback){
+        this.broker=brokerURL;
+        this.qos=qos;
+        this.clientId=clientId;
     	this.qos=qos;
-    	this.clientId=clientId;
     	this.persistence = new MemoryPersistence();
     	try {
-			this.sampleClient = new MqttClient(this.broker, this.clientId, persistence);
+            this.sampleClient = new MqttClient(this.broker, this.clientId, this.persistence);
+            this.sampleClient.setCallback(callback);
             MqttConnectOptions connOpts = new MqttConnectOptions();
             connOpts.setCleanSession(true);
             System.out.println("Connecting to broker: "+broker);
             this.sampleClient.connect(connOpts);
             System.out.println("Connected");
 		} catch (MqttException me) {
-            System.out.println("reason "+me.getReasonCode());
-            System.out.println("msg "+me.getMessage());
-            System.out.println("loc "+me.getLocalizedMessage());
-            System.out.println("cause "+me.getCause());
-            System.out.println("excep "+me);
-            me.printStackTrace();
+            //TODO : Log errors
 			
 		}
     }
-    public  MqttPublisherClient() {
-		this("tcp://iot.eclipse.org:1883",2,"JavaSample");
-	}
-    
+
     public void publish(String topic, String content) {
     	try {
             MqttMessage message = new MqttMessage(content.getBytes());
             message.setQos(this.qos);
             this.sampleClient.publish(topic, message);
-            System.out.println("Message published");
         } catch(MqttException me) {
-            System.out.println("msg "+me.getMessage());
+            // TODO : Log erros
         }
     }
+    
     public void disconnect() {
         try {
 			this.sampleClient.disconnect();
-			System.out.println("Disconnected");
 		} catch (MqttException e) {
-			e.printStackTrace();
+			// TODO : Log erors
 		}
         
     }
-
     
+    public void subscribe(String topic){
+        try {
+            this.sampleClient.subscribe(topic);
+        } catch (MqttException e) {
+            // TODO Auto-generated catch block
+
+        }
+    }
+
 }
