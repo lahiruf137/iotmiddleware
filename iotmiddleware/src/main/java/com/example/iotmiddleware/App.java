@@ -1,6 +1,6 @@
 package com.example.iotmiddleware;
 
-import java.util.Scanner;
+
 
 import com.example.iotmiddleware.management.OnEventListener;
 
