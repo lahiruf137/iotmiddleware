@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import com.example.iotmiddleware.discovery.NeighbourDiscovery;
 import com.example.iotmiddleware.discovery.ServiceRegistration;
-import com.example.iotmiddleware.management.AttributeManagement;
+import com.example.iotmiddleware.management.AttributeManager;
 import com.example.iotmiddleware.management.RMIInterface;
 import com.example.iotmiddleware.management.RemoteOperationServer;
 import com.example.iotmiddleware.management.OnEventListener;
@@ -32,7 +32,7 @@ public class IotCore {
 		neighbourDiscovery=new NeighbourDiscovery(iotcore_serv_type);
 	    new Thread(new RemoteOperationServer(iotcore_inst_name)).start();
 	      
-	      AttributeManagement.registerEventListner(evntl);
+	      AttributeManager.registerEventListner(evntl);
 	      
 	      Runtime.getRuntime().addShutdownHook(new Thread() {
 	          public void run() {
@@ -76,19 +76,19 @@ public class IotCore {
 	}
 	
 	public ArrayList<String> getSelfAttributeList() throws Exception{
-		return new ArrayList<String>(AttributeManagement.getAttributeList());
+		return new ArrayList<String>(AttributeManager.getAttributeList());
 	}
 	
 	public void setSelfAttribute(String attribute,String value) throws Exception {
-		AttributeManagement.setAttribute(attribute,value);
+		AttributeManager.setAttribute(attribute,value);
 	}
 	
 	public String getSelfAttributeValue(String attribute) throws Exception {
-		return AttributeManagement.getAttribute(attribute);
+		return AttributeManager.getAttribute(attribute);
 	}
 	
 	public void removeSelfAttribute(String attribute) throws Exception {
-		AttributeManagement.unsetAttribute(attribute);
+		AttributeManager.unsetAttribute(attribute);
 	}
 		
 	static class RefrenceEventLister implements OnEventListener{

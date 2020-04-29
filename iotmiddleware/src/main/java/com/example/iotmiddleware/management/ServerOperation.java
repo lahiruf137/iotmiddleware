@@ -18,15 +18,15 @@ public class ServerOperation extends UnicastRemoteObject implements RMIInterface
 	}
 	
 	public synchronized ArrayList<String> getAttributeList() throws RemoteException {
-		return new ArrayList<String>(AttributeManagement.getAttributeList());
+		return new ArrayList<String>(AttributeManager.getAttributeList());
 	}
 	
 	public synchronized String getAttribute(String key) throws RemoteException {
-		return AttributeManagement.getAttribute(key);
+		return AttributeManager.getAttribute(key);
 	}
 	
 	public synchronized void  setAttribute(String key, String value) throws RemoteException {
-		AttributeManagement.setAttribute(key,value);
+		AttributeManager.setAttribute(key,value);
 	}
 	
 }

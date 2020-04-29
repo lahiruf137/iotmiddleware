@@ -6,7 +6,7 @@ import java.util.Set;
 
 
 
-public class AttributeManagement {
+public class AttributeManager {
 	private static transient HashMap<String, String> attributeList = new HashMap<String, String>();
 	private static OnEventListener listner1;
 	
