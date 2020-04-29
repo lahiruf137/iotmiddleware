@@ -14,27 +14,27 @@ public class App
   public static void main( String[] args ) throws Exception
   {
     IotCore iotsystem = new IotCore(new OnEventAction() );
-    Thread.sleep(500);
+    Thread.sleep(2000);
     iotsystem.setSelfAttribute("Light_1","on");
     iotsystem.setSelfAttribute("Light_2","off");
     
     while(true) {
-    	System.out.println("Enter to view neighbours or Ctrl+c to exit");
-    	Scanner sc =new Scanner(System.in);
-    	sc.nextLine();
-    	sc.close();
+    	Thread.sleep(10000);
     	printNeighbourInfo(iotsystem);
     }
     
   }
   
   public static void printNeighbourInfo(IotCore iotsystem) throws Exception {
+	  System.out.println("##### Discovered Neighbour List #####");
 	  for(String s: iotsystem.getNeighbours()){
 	      System.out.println("Neighbour : "+s);
 	      //for (String attr: iotsystem.getNeighbourAttributes(s)) {
 	    //	  System.out.println(attr+" : "+iotsystem.getNeighbourAttributeValue(s,attr));
 	     // }
 	  } 
+	  System.out.println("#####################################");
+	  
   }
 }
 
