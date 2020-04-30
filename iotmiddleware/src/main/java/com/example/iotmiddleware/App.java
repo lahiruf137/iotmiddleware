@@ -19,7 +19,7 @@ public class App
     iotsystem.setSelfAttribute("Light_2","off");
     
     while(true) {
-    	Thread.sleep(10000);
+    	Thread.sleep(500);
     	printNeighbourInfo(iotsystem);
     }
     
