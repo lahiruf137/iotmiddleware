@@ -37,7 +37,7 @@ public class NeighbourDiscovery {
 				updateNeighbourList();
 				Thread.sleep(5000);
 			} catch (Exception e) {
-				//TODO: handle exception
+				logger.error("Exception occurred while updating Neighbours  : {}",e.getMessage());
 			}
 		};
 		new Thread(updaterThread).run();
@@ -47,6 +47,10 @@ public class NeighbourDiscovery {
 		try{
 			NeighbourDiscovery.lock.lock();
 			return NeighbourDiscovery.hostList;
+		}
+		catch(Exception e){
+			logger.error("Unable to return Neighbour list  : {}",e.getMessage());
+			return new LinkedHashSet<String>();
 		}
 		finally{
 			NeighbourDiscovery.lock.unlock();
@@ -61,7 +65,7 @@ public class NeighbourDiscovery {
 					jmdns=JmDNS.create(InetAddress.getLocalHost());
 					jmdns.addServiceListener(iotcore_serv_type, serviceListener);
 				} catch (Exception e) {
-					logger.error(e.getMessage());
+					logger.error("Unable to update Neighbour list : {}",e.getMessage());
 				}
 				finally{
 					NeighbourDiscovery.lock.unlock();
@@ -72,21 +76,21 @@ public class NeighbourDiscovery {
 		public void serviceAdded(ServiceEvent event) {
 			for (String host : event.getInfo().getHostAddresses()){
 				NeighbourDiscovery.hostList.add(host);
-					logger.debug("added"+host);
+					logger.debug("Neighbour host added : {}",host);
 			}		
 		}
 	     public void serviceRemoved(ServiceEvent event) {
 	    	 for (String host : event.getInfo().getHostAddresses()){
 				
 				NeighbourDiscovery.hostList.remove(host);
-					logger.debug("removed"+host);
+					logger.debug("Neighbour host removed : {}",host);
 				
 	 		}
 	     }
 		 public void serviceResolved(ServiceEvent event) {
 			 for (String host : event.getInfo().getHostAddresses()){
 				NeighbourDiscovery.hostList.add(host);
-					logger.debug("resolved"+host);
+					logger.debug("Neighbour host sevice resolved : {} ",host);
 				
 			}
 		 }

@@ -23,7 +23,7 @@ public class IotCore {
 	private final String iotcore_serv_desc="example-service";
 	private final int iotcore_serv_port=8080;
 	private NeighbourDiscovery neighbourDiscovery;
-	ServiceRegistration serviceRegistration;
+	private ServiceRegistration serviceRegistration;
 	private static final Logger logger = LoggerFactory.getLogger(IotCore.class);
 
 	
@@ -40,7 +40,7 @@ public class IotCore {
 	      			serviceRegistration.unregisterAllServices();
 					logger.info("Unregesterd instance");
 				} catch (Exception e) {
-					logger.error("error occored while unregrestering");
+					logger.error("Error occored while unregrestering : {}",e.getMessage());
 				}
 	          }
 	        });
@@ -93,10 +93,10 @@ public class IotCore {
 		
 	static class RefrenceEventLister implements OnEventListener{
 		public void onAttributeSet(String key, String value) {
-			logger.debug("Attribuet set "+key+":"+value);
+			logger.debug("Attribuet set : {} -> {} ",key,value);
 		}
 		public void onAttributeUnset(String key) {
-			logger.debug("Attribute unset"+key);
+			logger.debug("Attribute unset : {}",key);
 		}
 	}
 

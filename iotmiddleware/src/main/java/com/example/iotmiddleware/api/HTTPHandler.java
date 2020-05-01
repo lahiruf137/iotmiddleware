@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -13,9 +16,11 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 
+
 public class HTTPHandler {
     private String HTTPServer;
     private final CloseableHttpClient httpClient;
+    private static final Logger logger = LoggerFactory.getLogger(HTTPHandler.class);
 
     public HTTPHandler(String HTTPServerURL){
         this.HTTPServer=HTTPServerURL;
@@ -39,7 +44,7 @@ public class HTTPHandler {
             result=response.getStatusLine().toString();
         }
         catch(Exception e){
-            // TODO log errors
+            logger.error("Unable to execute HTTP GET request : {}",e.getMessage());
         }
         return result;
 
@@ -62,7 +67,7 @@ public class HTTPHandler {
             result= response.getStatusLine().toString();
 
         } catch (Exception e) {
-            //TODO: handle exception
+            logger.error("Unable to execute HTTP POST request : {}",e.getMessage());
         }
         return result;
     }

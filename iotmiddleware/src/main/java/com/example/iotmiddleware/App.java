@@ -13,8 +13,10 @@ public class App
 {
   public static void main( String[] args ) throws Exception
   {
-    IotCore iotsystem = new IotCore(new OnEventAction() );
-    Thread.sleep(2000);
+	  System.out.println("starting");
+	IotCore iotsystem = new IotCore(new OnEventAction() );
+	System.out.println("started");
+    //Thread.sleep(2000);
     iotsystem.setSelfAttribute("Light_1","on");
     iotsystem.setSelfAttribute("Light_2","off");
     

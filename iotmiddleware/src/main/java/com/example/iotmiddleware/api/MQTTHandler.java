@@ -7,13 +7,17 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class MQTTHandler {
     private int qos;
     private String clientId;
     private String broker;
     private MemoryPersistence persistence;
     private MqttClient sampleClient;
-    
+    private static final Logger logger = LoggerFactory.getLogger(HTTPHandler.class);
+
     public MQTTHandler(String brokerURL, int qos,String clientId, MqttCallback callback){
         this.broker=brokerURL;
         this.qos=qos;
@@ -28,8 +32,8 @@ public class MQTTHandler {
             System.out.println("Connecting to broker: "+broker);
             this.sampleClient.connect(connOpts);
             System.out.println("Connected");
-		} catch (MqttException me) {
-            //TODO : Log errors
+		} catch (MqttException e) {
+            logger.error("Unable to create MQTTHandler instance : {}",e.getMessage());
 			
 		}
     }
@@ -39,8 +43,8 @@ public class MQTTHandler {
             MqttMessage message = new MqttMessage(content.getBytes());
             message.setQos(this.qos);
             this.sampleClient.publish(topic, message);
-        } catch(MqttException me) {
-            // TODO : Log erros
+        } catch(MqttException e) {
+            logger.error("Unable to publish MQTT Message : {}",e.getMessage());
         }
     }
     
@@ -48,7 +52,7 @@ public class MQTTHandler {
         try {
 			this.sampleClient.disconnect();
 		} catch (MqttException e) {
-			// TODO : Log erors
+			logger.error("Unable to disconnect MQTT broker : {}",e.getMessage());
 		}
         
     }
@@ -57,7 +61,7 @@ public class MQTTHandler {
         try {
             this.sampleClient.subscribe(topic);
         } catch (MqttException e) {
-            // TODO Auto-generated catch block
+            logger.error("Unable to subscribe MQTT broker/topic : {}",e.getMessage());
 
         }
     }
