@@ -29,9 +29,9 @@ public class MQTTHandler {
             this.sampleClient.setCallback(callback);
             MqttConnectOptions connOpts = new MqttConnectOptions();
             connOpts.setCleanSession(true);
-            System.out.println("Connecting to broker: "+broker);
+            logger.debug("Connecting to broker : {}",broker);
             this.sampleClient.connect(connOpts);
-            System.out.println("Connected");
+            logger.info("Connected to broker : {}",broker);
 		} catch (MqttException e) {
             logger.error("Unable to create MQTTHandler instance : {}",e.getMessage());
 			

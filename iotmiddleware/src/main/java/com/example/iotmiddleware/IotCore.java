@@ -27,9 +27,14 @@ public class IotCore {
 	private static final Logger logger = LoggerFactory.getLogger(IotCore.class);
 
 	
-	public IotCore(OnEventListener evntl) throws Exception {
-		serviceRegistration=new ServiceRegistration(iotcore_serv_type,iotcore_serv_name,iotcore_serv_desc,iotcore_serv_port);
-		neighbourDiscovery=new NeighbourDiscovery(iotcore_serv_type);
+	public IotCore(OnEventListener evntl)  {
+		try {
+			serviceRegistration=new ServiceRegistration(iotcore_serv_type,iotcore_serv_name,iotcore_serv_desc,iotcore_serv_port);
+			neighbourDiscovery=new NeighbourDiscovery(iotcore_serv_type);	
+		} catch (Exception e) {
+			logger.error("Unable to initilize child objects : {}",e.getMessage());
+		}
+		
 	    new Thread(new RemoteOperationServer(iotcore_inst_name)).start();
 	      
 	      AttributeManager.registerEventListner(evntl);
@@ -46,49 +51,88 @@ public class IotCore {
 	        });
 	}
 	
-	public IotCore() throws Exception{
+	public IotCore() {
 	      this(new RefrenceEventLister());
 		}
 	
-	public Set<String> getNeighbours() throws Exception{
-		return neighbourDiscovery.getNeighbours();
+	public Set<String> getNeighbours() {
+		return neighbourDiscovery.getNeighbours();			
 	}
 	
-	public ArrayList<String> getNeighbourAttributes(String neighbour) throws Exception {
-		ArrayList<String> attributeList=new ArrayList<String>();
-
-		RMIInterface look_up= (RMIInterface) Naming.lookup("//"+neighbour+"/"+iotcore_inst_name);
-		attributeList = look_up.getAttributeList();
-
-		return attributeList;
-	}
-	
-	public void setNeighbourAttribute(String neighbour,String attribute,String value) throws Exception {
-		RMIInterface look_up= (RMIInterface) Naming.lookup("//"+neighbour+"/"+iotcore_inst_name);
-		look_up.setAttribute(attribute,value);
+	public ArrayList<String> getNeighbourAttributes(String neighbour) {
+		try {
+			ArrayList<String> attributeList=new ArrayList<String>();
+			RMIInterface look_up= (RMIInterface) Naming.lookup("//"+neighbour+"/"+iotcore_inst_name);
+			attributeList = look_up.getAttributeList();
+			return attributeList;
+			
+		} catch (Exception e) {
+			logger.error("Unable to retrive neighbour attributes : {}",e.getMessage());
+			return new ArrayList<>();
+		}
 		
 	}
 	
-	public String getNeighbourAttributeValue(String neighbour,String attribute) throws Exception {
-		RMIInterface look_up= (RMIInterface) Naming.lookup("//"+neighbour+"/"+iotcore_inst_name);
-		String value = look_up.getAttribute(attribute);
-		return value;
+	public void setNeighbourAttribute(String neighbour,String attribute,String value) {
+		try {
+			RMIInterface look_up= (RMIInterface) Naming.lookup("//"+neighbour+"/"+iotcore_inst_name);
+			look_up.setAttribute(attribute,value);
+			
+		} catch (Exception e) {
+			logger.error("Unable to set neighbour attribute : {}",e.getMessage());
+		}
+		
+		
 	}
 	
-	public ArrayList<String> getSelfAttributeList() throws Exception{
-		return new ArrayList<String>(AttributeManager.getAttributeList());
+	public String getNeighbourAttributeValue(String neighbour,String attribute) {
+		try {
+			RMIInterface look_up= (RMIInterface) Naming.lookup("//"+neighbour+"/"+iotcore_inst_name);
+			String value = look_up.getAttribute(attribute);
+			return value;	
+		} catch (Exception e) {
+			logger.error("Unable to retrive neighbour attribute vlue : {}",e.getMessage());
+			return new String();
+		}
+		
 	}
 	
-	public void setSelfAttribute(String attribute,String value) throws Exception {
-		AttributeManager.setAttribute(attribute,value);
+	public ArrayList<String> getSelfAttributeList() {
+		try {
+			return new ArrayList<String>(AttributeManager.getAttributeList());
+		} catch (Exception e) {
+			logger.error("Unable to retrive self attribute list : {}",e.getMessage());
+			return new ArrayList<>();
+		}
+		
 	}
 	
-	public String getSelfAttributeValue(String attribute) throws Exception {
-		return AttributeManager.getAttribute(attribute);
+	public void setSelfAttribute(String attribute,String value) {
+		try {
+			AttributeManager.setAttribute(attribute,value);
+		} catch (Exception e) {
+			logger.error("Unable to set self attribute : {}",e.getMessage());
+		}
+		
 	}
 	
-	public void removeSelfAttribute(String attribute) throws Exception {
-		AttributeManager.unsetAttribute(attribute);
+	public String getSelfAttributeValue(String attribute) {
+		try {
+			return AttributeManager.getAttribute(attribute);
+		} catch (Exception e) {
+			logger.error("Unable to get self attribute value: {}",e.getMessage());
+			return new String();
+		}
+		
+	}
+	
+	public void removeSelfAttribute(String attribute) {
+		try {
+			AttributeManager.unsetAttribute(attribute);
+		} catch (Exception e) {
+			logger.error("Unable to remove self attribute : {}",e.getMessage());
+		}
+		
 	}
 		
 	static class RefrenceEventLister implements OnEventListener{

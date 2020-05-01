@@ -43,7 +43,7 @@ public class NeighbourDiscovery {
 		new Thread(updaterThread).run();
 	}
 	
-	public Set<String> getNeighbours() throws Exception{
+	public Set<String> getNeighbours(){
 		try{
 			NeighbourDiscovery.lock.lock();
 			return NeighbourDiscovery.hostList;
