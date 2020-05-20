@@ -3,12 +3,14 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.example.iotmiddleware</groupId>
     <artifactId>app</artifactId>
-    <version>1.0</version>
+    <version>1.0-03</version>
     <packaging>jar</packaging>
     <name>app</name>
     <url>http://maven.apache.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
     <dependencies>
         <dependency>
@@ -98,6 +100,8 @@
                     </execution>
                 </executions>
             </plugin>
+
+<!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
@@ -109,7 +113,88 @@
                 <artifactId>maven-project-info-reports-plugin</artifactId>
                 <version>3.0.0</version>
             </plugin>
+            <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.2.0</version>
+        <configuration>
+        </configuration>
+      </plugin> -->
+
+         <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.7.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>3.0.0</version>
+            </plugin> 
+         <plugin>
+	<groupId>org.jacoco</groupId>
+	<artifactId>jacoco-maven-plugin</artifactId>
+	<version>0.8.2</version>
+	<executions>
+		<execution>
+			<goals>
+				<goal>prepare-agent</goal>
+			</goals>
+		</execution>
+		<!-- attached to Maven test phase -->
+		<execution>
+			<id>report</id>
+			<phase>test</phase>
+			<goals>
+				<goal>report</goal>
+			</goals>
+		</execution>
+	</executions>
+</plugin>
+                  
+              
+
+<plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+        <configuration>
+          <show>private</show>
+          <doclet>nl.talsmasoftware.umldoclet.UMLDoclet</doclet>
+                        <docletArtifact>
+                            <groupId>nl.talsmasoftware</groupId>
+                            <artifactId>umldoclet</artifactId>
+                            <version>1.1.3</version>
+                        </docletArtifact>
+                        <additionalOptions>
+                            <additionalOption>-umlIncludePrivateFields true</additionalOption>
+                            <additionalOption>-umlIncludePackagePrivateFields true</additionalOption>
+                            <additionalOption>-umlIncludePrivateMethods true</additionalOption>
+                            <additionalOption>-umlIncludePackagePrivateMethods true</additionalOption>
+                            <additionalOption>-umlIncludePrivateClasses true</additionalOption>
+                            <additionalOption>-umlIncludePackagePrivateClasses true</additionalOption>
+                            <additionalOption>-umlIncludePrivateInnerClasses true</additionalOption>
+                            <additionalOption>-umlIncludePackagePrivateInnerClasses true</additionalOption>
+                            <additionalOption>-umlIncludeProtectedInnerClasses true</additionalOption>
+                            <additionalOption>-umlImageFormat PNG</additionalOption>
+                            <additionalOption>-umlImageDirectory img/uml</additionalOption>
+
+                        </additionalOptions>
+        </configuration>
+      </plugin>
+
+
         </plugins>
+
+        
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -120,6 +205,23 @@
             </resource>
         </resources>
     </build>
+<reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>3.0.0-M4</version>
+      </plugin>
+      <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jxr-plugin</artifactId>
+            <version>2.3</version>
+        </plugin>
+      
+    </plugins>
+  </reporting>
 
     
+
+
 </project>
