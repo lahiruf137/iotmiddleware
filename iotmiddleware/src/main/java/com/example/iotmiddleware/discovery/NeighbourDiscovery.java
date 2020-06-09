@@ -38,8 +38,11 @@ public class NeighbourDiscovery {
 		 Runnable updaterThread= ()->{
 			while(true){
 			try {
+				NeighbourDiscovery.lock.lock();
 				updateNeighbourList();
-				Thread.sleep(5000);
+				NeighbourDiscovery.lock.unlock();
+				Thread.sleep(1000);
+				
 			} catch (Exception e) {
 				logger.error("Exception occurred while updating Neighbours  : {}",e.getMessage());
 			}
@@ -64,18 +67,19 @@ public class NeighbourDiscovery {
 	}
 
 	public void updateNeighbourList(){
-		NeighbourDiscovery.lock.lock();
+		//NeighbourDiscovery.lock.lock();
 				try {
 					NeighbourDiscovery.hostList.clear();
 					serviceListener=new NeighbourListener();
 					//String address= InetAddress.getLocalHost().getHostAddress();
 					jmdns=JmDNS.create(InetAddress.getLocalHost());
 					jmdns.addServiceListener(iotcore_serv_type, serviceListener);
+					Thread.sleep(5000);
 				} catch (Exception e) {
 					logger.error("Unable to update Neighbour list : {}",e.getMessage());
 				}
 				finally{
-					NeighbourDiscovery.lock.unlock();
+					//NeighbourDiscovery.lock.unlock();
 				}
 	}
 	
