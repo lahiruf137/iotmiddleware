@@ -25,6 +25,7 @@ public class NeighbourDiscovery {
 
 	public NeighbourDiscovery(String iotcore_serv_type) throws Exception {
 		this.iotcore_serv_type=iotcore_serv_type;
+		
 
 		/*
 	 	 * 
@@ -32,15 +33,20 @@ public class NeighbourDiscovery {
 	 	 * Due to this issue serviceRemoved is never called, Therfore bellow thread will update list periodically
 	 	 * 
 		 */
-		Runnable updaterThread= ()->{
+		
+		
+		 Runnable updaterThread= ()->{
+			while(true){
 			try {
 				updateNeighbourList();
 				Thread.sleep(5000);
 			} catch (Exception e) {
 				logger.error("Exception occurred while updating Neighbours  : {}",e.getMessage());
 			}
+			
+		}
 		};
-		new Thread(updaterThread).run();
+		new Thread(updaterThread).start();
 	}
 	
 	public Set<String> getNeighbours(){
@@ -62,6 +68,7 @@ public class NeighbourDiscovery {
 				try {
 					NeighbourDiscovery.hostList.clear();
 					serviceListener=new NeighbourListener();
+					//String address= InetAddress.getLocalHost().getHostAddress();
 					jmdns=JmDNS.create(InetAddress.getLocalHost());
 					jmdns.addServiceListener(iotcore_serv_type, serviceListener);
 				} catch (Exception e) {
