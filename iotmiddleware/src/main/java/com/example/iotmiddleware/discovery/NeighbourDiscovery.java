@@ -67,48 +67,49 @@ public class NeighbourDiscovery {
 	}
 
 	public void updateNeighbourList(){
-		//NeighbourDiscovery.lock.lock();
+		NeighbourDiscovery.lock.lock();
 				try {
-					NeighbourDiscovery.lock.lock();
+					//NeighbourDiscovery.lock.lock();
 					NeighbourDiscovery.hostList.clear();
 					serviceListener=new NeighbourListener();
-					NeighbourDiscovery.lock.unlock();
+					
 					//String address= InetAddress.getLocalHost().getHostAddress();
 					jmdns=JmDNS.create(InetAddress.getLocalHost());
 					jmdns.addServiceListener(iotcore_serv_type, serviceListener);
 					Thread.sleep(5000);
+					//NeighbourDiscovery.lock.unlock();
 				} catch (Exception e) {
 					logger.error("Unable to update Neighbour list : {}",e.getMessage());
 				}
 				finally{
-					//NeighbourDiscovery.lock.unlock();
+					NeighbourDiscovery.lock.unlock();
 				}
 	}
 	
 	class NeighbourListener implements ServiceListener {
 		public void serviceAdded(ServiceEvent event) {
 			for (String host : event.getInfo().getHostAddresses()){
-				NeighbourDiscovery.lock.lock();
+				//NeighbourDiscovery.lock.lock();
 				NeighbourDiscovery.hostList.add(host);
 					logger.debug("Neighbour host added : {}",host);
-					NeighbourDiscovery.lock.unlock();
+					//NeighbourDiscovery.lock.unlock();
 			}		
 		}
 	     public void serviceRemoved(ServiceEvent event) {
 	    	 for (String host : event.getInfo().getHostAddresses()){
-	    		 NeighbourDiscovery.lock.lock();
+	    		 //NeighbourDiscovery.lock.lock();
 				NeighbourDiscovery.hostList.remove(host);
 					logger.debug("Neighbour host removed : {}",host);
-					NeighbourDiscovery.lock.unlock();
+					//NeighbourDiscovery.lock.unlock();
 				
 	 		}
 	     }
 		 public void serviceResolved(ServiceEvent event) {
 			 for (String host : event.getInfo().getHostAddresses()){
-				 NeighbourDiscovery.lock.lock();
+				 //NeighbourDiscovery.lock.lock();
 				NeighbourDiscovery.hostList.add(host);
 					logger.debug("Neighbour host sevice resolved : {} ",host);
-					NeighbourDiscovery.lock.unlock();
+					//NeighbourDiscovery.lock.unlock();
 				
 			}
 		 }
