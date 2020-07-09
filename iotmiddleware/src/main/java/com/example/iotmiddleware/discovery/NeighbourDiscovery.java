@@ -54,8 +54,13 @@ public class NeighbourDiscovery {
 	
 	public Set<String> getNeighbours(){
 		try{
+			LinkedHashSet<String> h=new LinkedHashSet<String>();;
 			NeighbourDiscovery.lock.lock();
-			return NeighbourDiscovery.hostList;
+			for(String s : hostList){
+				h.add(s);
+			}
+			//LinkedHashSet<String> h=NeighbourDiscovery.hostList;
+			return h;
 		}
 		catch(Exception e){
 			logger.error("Unable to return Neighbour list  : {}",e.getMessage());

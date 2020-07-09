@@ -1,11 +1,11 @@
 package com.example.iotmiddleware;
 
-
-
 import java.util.ArrayList;
 import java.util.Set;
 
 import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -32,6 +32,8 @@ public class App {
 	public static final String ANSI_WHITE = "\u001B[37m";
 	
   public static void main( String[] args ) throws Exception {
+	BasicConfigurator.configure();
+	org.apache.log4j.Logger.getRootLogger().setLevel(Level.INFO);
 	  
 	  System.setProperty("java.net.preferIPv4Stack", "true");
 	  if(args.length!=1) {
@@ -64,7 +66,7 @@ public class App {
 			while(true){
 				String value="false";
 				try {
-				Thread.sleep(2000);
+				Thread.sleep(500);
 				sensorTriggerPin.high(); // Make trigger pin HIGH
 				Thread.sleep((long) 0.01);// Delay for 10 microseconds
 				sensorTriggerPin.low(); //Make trigger pin LOW
@@ -104,26 +106,31 @@ public class App {
 			 Thread.sleep(2000);
 			 System.out.print("["+ANSI_GREEN+"DONE"+ANSI_RESET+"]"+"\n\n");
 
-			 //final GpioController gpio = GpioFactory.getInstance();
-			// final GpioPinDigitalOutput pin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_01, "MyLED", PinState.HIGH);
-			// pin.setShutdownOptions(true, PinState.LOW);
-
+			final GpioController gpio = GpioFactory.getInstance();
+			final GpioPinDigitalOutput pin1 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_01, "MyLED", PinState.LOW);
+			
+			pin1.setShutdownOptions(true, PinState.LOW);
+			
 			 while(true){
 			 Set<String> n=iotsystem.getNeighbours();
-			 System.out.println(n);
+			 //System.out.println(n);
 			 for(String s: n){
-				 for (String attr: iotsystem.getNeighbourAttributes(s)) {
-					 System.out.println(attr);
-					 if(attr.equals("LED") && iotsystem.getNeighbourAttributeValue(s, attr).equals("true")){
-						 //pin.high();
+				 String val="false";
+				 
+
+				if(iotsystem.getNeighbourAttributes(s).contains("LED")){
+					 val=iotsystem.getNeighbourAttributeValue(s, "LED");
+				}
+				if(val.equals("true")){
+						 pin1.high();
 						 System.out.println("on");
 
 					 }
 					 else{
-						 //pin.low();
+						 pin1.low();
 						 System.out.println("off");
 					 }
-				 }
+				 
 			 }
 			 Thread.sleep(2000);
 			} 
