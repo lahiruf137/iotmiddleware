@@ -13,6 +13,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 //import com.example.iotmiddleware.Test11.Callback;
 import com.example.iotmiddleware.api.MQTTHandler;
 import com.example.iotmiddleware.management.OnEventListener;
+import com.pi4j.io.gpio.*;
 
 /**
 * iotmiddleware
@@ -40,11 +41,94 @@ public class App {
 		if (args[0].equals("n")) {
 			neighbourDiscovery();
 		}
-		else if (args[0].contentEquals("m")) {
+		else if (args[0].equals("m")) {
 			apiConnectivity();
 		}
-		else if(args[0]=="d") {
+		else if(args[0].equals("d")) {
 			//
+			 //Initilize middleware
+			 String client_ID="Client_"+(int)(Math.random()*100);
+			 System.out.print("# Starting "+client_ID+"\t");
+			 //BasicConfigurator.configure();
+			 IotCore iotsystem = new IotCore(new OnEventAction());
+			 Thread.sleep(2000);
+			 System.out.print("["+ANSI_GREEN+"DONE"+ANSI_RESET+"]"+"\n\n");
+
+			 iotsystem.setSelfAttribute("LED", "false");
+
+			final GpioPinDigitalOutput sensorTriggerPin ;
+			final GpioPinDigitalInput sensorEchoPin ;
+			final  GpioController gpio = GpioFactory.getInstance();
+			sensorTriggerPin =  gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00); // Trigger pin as OUTPUT
+			sensorEchoPin = gpio.provisionDigitalInputPin(RaspiPin.GPIO_02,PinPullResistance.PULL_DOWN); // Echo pin as INPUT
+			while(true){
+				String value="false";
+				try {
+				Thread.sleep(2000);
+				sensorTriggerPin.high(); // Make trigger pin HIGH
+				Thread.sleep((long) 0.01);// Delay for 10 microseconds
+				sensorTriggerPin.low(); //Make trigger pin LOW
+			
+				while(sensorEchoPin.isLow()){ //Wait until the ECHO pin gets HIGH
+					
+				}
+				long startTime= System.nanoTime(); // Store the surrent time to calculate ECHO pin HIGH time.
+				while(sensorEchoPin.isHigh()){ //Wait until the ECHO pin gets LOW
+					
+				}
+				long endTime= System.nanoTime(); // Store the echo pin HIGH end time to calculate ECHO pin HIGH time.
+			
+				System.out.println("Distance :"+((((endTime-startTime)/1e3)/2) / 29.1) +" cm"); //Printing out the distance in cm  
+				if (((((endTime-startTime)/1e3)/2) / 29.1)<7){
+					value="true";
+				}
+				else{
+					value="false";
+				}
+				iotsystem.setSelfAttribute("LED",value);
+				//Thread.sleep(1000);
+				
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				}
+			}
+
+		}
+		else if (args[0].equals("c")){
+			//
+			 //Initilize middleware
+			 String client_ID="Client_"+(int)(Math.random()*100);
+			 System.out.print("# Starting "+client_ID+"\t");
+			 //BasicConfigurator.configure();
+			 IotCore iotsystem = new IotCore(new OnEventAction());
+			 Thread.sleep(2000);
+			 System.out.print("["+ANSI_GREEN+"DONE"+ANSI_RESET+"]"+"\n\n");
+
+			 //final GpioController gpio = GpioFactory.getInstance();
+			// final GpioPinDigitalOutput pin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_01, "MyLED", PinState.HIGH);
+			// pin.setShutdownOptions(true, PinState.LOW);
+
+			 while(true){
+			 Set<String> n=iotsystem.getNeighbours();
+			 System.out.println(n);
+			 for(String s: n){
+				 for (String attr: iotsystem.getNeighbourAttributes(s)) {
+					 System.out.println(attr);
+					 if(attr.equals("LED") && iotsystem.getNeighbourAttributeValue(s, attr).equals("true")){
+						 //pin.high();
+						 System.out.println("on");
+
+					 }
+					 else{
+						 //pin.low();
+						 System.out.println("off");
+					 }
+				 }
+			 }
+			 Thread.sleep(2000);
+			} 
+
+
 		}
 		else {
 			
